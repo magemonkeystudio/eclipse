@@ -1,3 +1,5 @@
+
+// commands.java
 package studio.magemonkey.commands;
 
 import org.bukkit.ChatColor;
