@@ -1,0 +1,17 @@
+name: Eclipse
+version: 1.0
+main: studio.magemonkey.Eclipse
+api-version: 1.20
+description: A plugin that saves mounts to an item.
+author: Drew
+commands:
+  eclipse:
+    description: Main command for the Eclipse plugin
+    usage: |-
+      /eclipse reload - Reload plugin configuration
+      /eclipse mount save - Save current mount to an item
+    permission: eclipse.reload
+permissions:
+  eclipse.reload:
+    description: Allows reloading the Eclipse configuration.
+    default: op

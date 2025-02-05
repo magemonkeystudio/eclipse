@@ -1,0 +1,16 @@
+mysql:
+  enabled: true
+  host: localhost
+  port: 3306
+  database: horse_data
+  username: root
+  password: password
+  useSSL: false
+  allowPublicKeyRetrieval: false
+
+mountItem:
+  material: PAPER
+  customModelData: 500
+  displayName: "&6Mount Figurance"
+  lore:
+    - "&7Right-click to retrieve this mount"
