@@ -33,7 +33,8 @@ public class EclipseCommand implements CommandExecutor {
             plugin.reloadConfig();
             player.sendMessage(ChatColor.GREEN + "Configuration reloaded.");
         } else if (args[0].equalsIgnoreCase("mount") && args.length >= 2 && args[1].equalsIgnoreCase("save")) {
-            player.sendMessage(ChatColor.YELLOW + "Use the mount item to spawn/despawn your mount.");
+            // Now instruct the player to use the mount item for spawning/despawning
+            player.sendMessage(ChatColor.YELLOW + "Use your mount item to spawn or despawn your mount.");
         } else {
             player.sendMessage(ChatColor.RED + "Invalid command usage.");
         }

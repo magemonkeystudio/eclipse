@@ -32,9 +32,10 @@ public class MountSpawnListener implements Listener {
         Material expectedMaterial = Material.valueOf(ConfigManager.getMountItemMaterial().toUpperCase());
         int expectedModelData = ConfigManager.getMountItemCustomModelData();
         if (item.getType() == expectedMaterial && meta.getCustomModelData() == expectedModelData) {
-            // 'spawn' returns a Horse because we provide Horse.class; casting is redundant.
+            // Spawn the horse using the configured spawn logic.
             Horse spawnedHorse = player.getWorld().spawn(player.getLocation(), Horse.class);
             MountData data = new MountData(spawnedHorse.getUniqueId().toString(), player.getUniqueId().toString(), true);
+            // Delete mount data from the database (since the mount is now active).
             mountService.deleteMountData(data);
             player.sendMessage("Mount spawned; mount data removed from the database.");
         }

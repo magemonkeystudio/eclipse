@@ -2,6 +2,7 @@ package studio.magemonkey.managers;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import studio.magemonkey.Eclipse;
+import java.util.List;
 
 public class ConfigManager {
 
@@ -42,5 +43,13 @@ public class ConfigManager {
 
     public static int getMountItemCustomModelData() {
         return config.getInt("mountItem.customModelData", 500);
+    }
+
+    public static String getMountItemDisplayName() {
+        return config.getString("mountItem.displayName", "&6Mount Figurance");
+    }
+
+    public static List<String> getMountItemLore() {
+        return config.getStringList("mountItem.lore");
     }
 }

@@ -1,7 +1,5 @@
 package studio.magemonkey;
 
-// IMPORTANT: Ensure this file is in src/main/java/studio/magemonkey/Eclipse.java so that the package declaration is correct.
-
 import org.bukkit.plugin.java.JavaPlugin;
 import studio.magemonkey.commands.EclipseCommand;
 import studio.magemonkey.listeners.MountListener;
@@ -20,7 +18,7 @@ public class Eclipse extends JavaPlugin {
 
         mountService = new MountService();
 
-        // Register listeners for mount spawn and despawn
+        // Register listeners for mount spawn and despawn events
         getServer().getPluginManager().registerEvents(new MountSpawnListener(mountService), this);
         getServer().getPluginManager().registerEvents(new MountListener(mountService), this);
 
@@ -43,6 +41,9 @@ public class Eclipse extends JavaPlugin {
         return instance;
     }
 
+    /**
+     * This method is used externally (e.g. by command executors) to obtain the MountService.
+     */
     public MountService getMountService() {
         return mountService;
     }
