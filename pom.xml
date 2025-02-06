@@ -67,6 +67,13 @@
             <version>${adventure.version}</version>
             <scope>provided</scope>
         </dependency>
+
+        <!-- MySQL Connector for MySQL storage -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.33</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -89,5 +96,4 @@
             </resource>
         </resources>
     </build>
-
 </project>

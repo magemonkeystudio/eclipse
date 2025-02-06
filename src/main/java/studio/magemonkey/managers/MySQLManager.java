@@ -1,123 +1,66 @@
 package studio.magemonkey.managers;
 
-import org.bukkit.configuration.ConfigurationSection;
-import studio.magemonkey.Eclipse;
 import studio.magemonkey.model.MountData;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class MySQLManager {
-    private final Eclipse plugin;
-    private final ConfigurationSection config;
+
+    private static MySQLManager instance;
     private Connection connection;
 
-    public MySQLManager(Eclipse plugin, ConfigurationSection config) {
-        this.plugin = plugin;
-        this.config = config;
-    }
-
-    public void initialize() {
-        String host = config.getString("host", "localhost");
-        int port = config.getInt("port", 3306);
-        String database = config.getString("database", "horse_data");
-        String username = config.getString("username", "root");
-        String password = config.getString("password", "password");
-        boolean useSSL = config.getBoolean("useSSL", false);
-        boolean allowPublicKeyRetrieval = config.getBoolean("allowPublicKeyRetrieval", false);
-
-        String url = "jdbc:mysql://" + host + ":" + port + "/" + database +
-                "?useSSL=" + useSSL +
-                "&autoReconnect=true" +
-                (allowPublicKeyRetrieval ? "&allowPublicKeyRetrieval=true" : "");
-
+    private MySQLManager() {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection(url, username, password);
-            createTable();
-            plugin.getLogger().info("MySQL connection initialized successfully.");
-        } catch (Exception e) {
-            plugin.getLogger().severe("MySQL initialization error: " + e.getMessage());
+            String url = "jdbc:mysql://" + ConfigManager.getMySQLHost() + ":" +
+                    ConfigManager.getMySQLPort() + "/" + ConfigManager.getMySQLDatabase() +
+                    "?useSSL=" + ConfigManager.useSSL() +
+                    "&allowPublicKeyRetrieval=" + ConfigManager.allowPublicKeyRetrieval();
+            connection = DriverManager.getConnection(url, ConfigManager.getMySQLUsername(), ConfigManager.getMySQLPassword());
+            String createTable = "CREATE TABLE IF NOT EXISTS mounts (" +
+                    "horse_id VARCHAR(36) NOT NULL, " +
+                    "player_uuid VARCHAR(36) NOT NULL, " +
+                    "spawned BOOLEAN NOT NULL, " +
+                    "PRIMARY KEY (horse_id, player_uuid)" +
+                    ");";
+            connection.createStatement().executeUpdate(createTable);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
-    @SuppressWarnings("SqlNoDataSourceInspection")
-    private void createTable() throws SQLException {
-        try (Statement stmt = connection.createStatement()) {
-            stmt.executeUpdate(
-                    "CREATE TABLE IF NOT EXISTS horse_mounts (" +
-                            "uuid VARCHAR(36) PRIMARY KEY," +
-                            "entityType VARCHAR(50)," +
-                            "color VARCHAR(50)," +
-                            "style VARCHAR(50)," +
-                            "variant VARCHAR(50)," +
-                            "saddle BOOLEAN," +
-                            "armor VARCHAR(50)," +
-                            "customName VARCHAR(100)," +
-                            "jumpStrength DOUBLE" +
-                            ")"
-            );
+    public static MySQLManager getInstance() {
+        if (instance == null) {
+            instance = new MySQLManager();
         }
+        return instance;
     }
 
-    @SuppressWarnings("SqlNoDataSourceInspection")
-    public void insertMount(String uuid, MountData data) {
-        if (connection == null) return;
-        String sql = "INSERT INTO horse_mounts (uuid, entityType, color, style, variant, saddle, armor, customName, jumpStrength) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, uuid);
-            ps.setString(2, data.getEntityType());
-            ps.setString(3, data.getColor());
-            ps.setString(4, data.getStyle());
-            ps.setString(5, data.getVariant());
-            ps.setBoolean(6, data.hasSaddle());
-            ps.setString(7, data.getArmor());
-            ps.setString(8, data.getCustomName());
-            ps.setDouble(9, data.getJumpStrength());
+    public void saveMountData(MountData data) {
+        try {
+            String query = "INSERT INTO mounts (horse_id, player_uuid, spawned) VALUES (?, ?, ?)" +
+                    " ON DUPLICATE KEY UPDATE spawned = ?";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, data.getHorseId());
+            ps.setString(2, data.getPlayerUUID());
+            ps.setBoolean(3, data.isSpawned());
+            ps.setBoolean(4, data.isSpawned());
             ps.executeUpdate();
-            plugin.getLogger().info("Inserted mount with UUID: " + uuid);
         } catch (SQLException e) {
-            plugin.getLogger().severe("MySQL insert error: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
-    @SuppressWarnings("SqlNoDataSourceInspection")
-    public MountData getMount(String uuid) {
-        if (connection == null) return null;
-        String sql = "SELECT * FROM horse_mounts WHERE uuid = ?";
-
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, uuid);
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                MountData data = new MountData();
-                data.setEntityType(rs.getString("entityType"));
-                data.setColor(rs.getString("color"));
-                data.setStyle(rs.getString("style"));
-                data.setVariant(rs.getString("variant"));
-                data.setSaddle(rs.getBoolean("saddle"));
-                data.setArmor(rs.getString("armor"));
-                data.setCustomName(rs.getString("customName"));
-                data.setJumpStrength(rs.getDouble("jumpStrength"));
-                plugin.getLogger().info("Retrieved mount with UUID: " + uuid);
-                return data;
-            }
+    public void deleteMountData(MountData data) {
+        try {
+            String query = "DELETE FROM mounts WHERE horse_id = ? AND player_uuid = ?";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, data.getHorseId());
+            ps.setString(2, data.getPlayerUUID());
+            ps.executeUpdate();
         } catch (SQLException e) {
-            plugin.getLogger().severe("MySQL query error: " + e.getMessage());
-        }
-        return null;
-    }
-
-    public void close() {
-        if (connection != null) {
-            try {
-                connection.close();
-                plugin.getLogger().info("MySQL connection closed.");
-            } catch (SQLException e) {
-                plugin.getLogger().severe("MySQL close error: " + e.getMessage());
-            }
+            e.printStackTrace();
         }
     }
 }

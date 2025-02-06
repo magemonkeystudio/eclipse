@@ -1,65 +1,46 @@
 package studio.magemonkey.managers;
 
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import studio.magemonkey.Eclipse;
 
-import java.io.File;
-import java.io.IOException;
-
 public class ConfigManager {
-    private final Eclipse plugin;
-    private File mountDataFile;
-    private FileConfiguration mountDataConfig;
-    private boolean mysqlEnabled;
-    private ConfigurationSection mysqlConfig;
 
-    public ConfigManager(Eclipse plugin) {
-        this.plugin = plugin;
+    private static final FileConfiguration config = Eclipse.getInstance().getConfig();
+
+    public static String getMySQLHost() {
+        return config.getString("mysql.host", "localhost");
     }
 
-    public void loadConfigs() {
-        plugin.saveDefaultConfig();
-        loadYAMLConfig();
-        loadMySQLConfig();
+    public static int getMySQLPort() {
+        return config.getInt("mysql.port", 3306);
     }
 
-    private void loadYAMLConfig() {
-        File dataFolder = plugin.getDataFolder();
-        if (!dataFolder.exists() && !dataFolder.mkdirs()) {
-            plugin.getLogger().severe("Failed to create plugin data folder!");
-        }
-        mountDataFile = new File(dataFolder, "mounts.yml");
-        try {
-            if (!mountDataFile.exists() && !mountDataFile.createNewFile()) {
-                plugin.getLogger().severe("Failed to create mounts.yml file!");
-            }
-        } catch (IOException e) {
-            plugin.getLogger().severe("Error creating mounts.yml: " + e.getMessage());
-        }
-        mountDataConfig = YamlConfiguration.loadConfiguration(mountDataFile);
+    public static String getMySQLDatabase() {
+        return config.getString("mysql.database", "horse_data");
     }
 
-    private void loadMySQLConfig() {
-        mysqlEnabled = plugin.getConfig().getBoolean("mysql.enabled", false);
-        mysqlConfig = plugin.getConfig().getConfigurationSection("mysql");
-        plugin.getLogger().info("MySQL enabled: " + mysqlEnabled);
+    public static String getMySQLUsername() {
+        return config.getString("mysql.username", "root");
     }
 
-    public boolean isMysqlEnabled() {
-        return mysqlEnabled;
+    public static String getMySQLPassword() {
+        return config.getString("mysql.password", "password");
     }
 
-    public ConfigurationSection getMysqlConfig() {
-        return mysqlConfig;
+    public static boolean useSSL() {
+        return config.getBoolean("mysql.useSSL", false);
     }
 
-    public FileConfiguration getMountDataConfig() {
-        return mountDataConfig;
+    public static boolean allowPublicKeyRetrieval() {
+        return config.getBoolean("mysql.allowPublicKeyRetrieval", false);
     }
 
-    public File getMountDataFile() {
-        return mountDataFile;
+    // Mount item configuration getters
+    public static String getMountItemMaterial() {
+        return config.getString("mountItem.material", "PAPER");
+    }
+
+    public static int getMountItemCustomModelData() {
+        return config.getInt("mountItem.customModelData", 500);
     }
 }
