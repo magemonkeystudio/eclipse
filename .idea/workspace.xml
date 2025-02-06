@@ -4,30 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2df4daca-0e96-4f73-94bf-821a3e0de5e9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/studio/magemonkey/commands/Command.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/studio/magemonkey/listeners/MountListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/studio/magemonkey/managers/ConfigManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/studio/magemonkey/managers/MySQLManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/studio/magemonkey/model/MountData.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/studio/magemonkey/service/MountService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+    <list default="true" id="2df4daca-0e96-4f73-94bf-821a3e0de5e9" name="Changes" comment="commit test">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/magemonkey/BorderTeleport.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/magemonkey/commands/BorderCommand.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/magemonkey/data/MountData.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/magemonkey/data/PendingTeleport.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/magemonkey/handlers/ConfigurationHandler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/magemonkey/handlers/ServerStatusHandler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/magemonkey/handlers/TeleportHandler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/magemonkey/listeners/JoinListener.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/magemonkey/listeners/MovementListener.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/magemonkey/utils/LocationUtils.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/config.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -157,10 +135,25 @@
       <workItem from="1738777460857" duration="64000" />
       <workItem from="1738790571903" duration="1011000" />
       <workItem from="1738791603694" duration="103000" />
+      <workItem from="1738791720134" duration="397000" />
+      <workItem from="1738792130332" duration="836000" />
     </task>
+    <task id="LOCAL-00001" summary="commit test">
+      <option name="closed" value="true" />
+      <created>1738792368653</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1738792368653</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="commit test" />
+    <option name="LAST_COMMIT_MESSAGE" value="commit test" />
   </component>
 </project>
