@@ -1,3 +1,4 @@
+// Eclipse.java
 package studio.magemonkey;
 
 import org.bukkit.plugin.java.JavaPlugin;
@@ -5,11 +6,12 @@ import studio.magemonkey.commands.EclipseCommand;
 import studio.magemonkey.listeners.MountListener;
 import studio.magemonkey.listeners.MountSpawnListener;
 import studio.magemonkey.service.MountService;
+import org.bukkit.NamespacedKey;
 
 public class Eclipse extends JavaPlugin {
-
     private static Eclipse instance;
     private MountService mountService;
+    private NamespacedKey mountIdKey;
 
     @Override
     public void onEnable() {
@@ -17,12 +19,11 @@ public class Eclipse extends JavaPlugin {
         saveDefaultConfig();
 
         mountService = new MountService();
+        mountIdKey = new NamespacedKey(this, "mountId");
 
-        // Register listeners for mount spawn and despawn events
-        getServer().getPluginManager().registerEvents(new MountSpawnListener(mountService), this);
+        getServer().getPluginManager().registerEvents(new MountSpawnListener(mountService, this), this);
         getServer().getPluginManager().registerEvents(new MountListener(mountService), this);
 
-        // Register the unified "eclipse" command executor with a null-check to avoid NPE
         if (getCommand("eclipse") != null) {
             getCommand("eclipse").setExecutor(new EclipseCommand(this));
         } else {
@@ -34,6 +35,9 @@ public class Eclipse extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        if (mountService != null) {
+            mountService.closeConnections();
+        }
         getLogger().info("Eclipse plugin disabled.");
     }
 
@@ -41,10 +45,11 @@ public class Eclipse extends JavaPlugin {
         return instance;
     }
 
-    /**
-     * This method is used externally (e.g. by command executors) to obtain the MountService.
-     */
     public MountService getMountService() {
         return mountService;
+    }
+
+    public NamespacedKey getMountIdKey() {
+        return mountIdKey;
     }
 }
